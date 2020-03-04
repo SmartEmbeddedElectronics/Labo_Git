@@ -32,3 +32,8 @@ Stijn De Bels
 ## Software
 It's running Ubuntu server on the Raspberry Pi with the ROS framework.  
 The ROS modules are developed and tested on different Ubuntu computers and put on the Raspberry Pi using Git.
+
+## Raspberry Pi
+MAC: dc:a6:32:50:a8:26
+Login:  ubuntu
+Passwd: SmartEmbedded
