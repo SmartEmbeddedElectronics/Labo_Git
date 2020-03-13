@@ -1,3 +1,9 @@
 [submodule "catkin_ws/src/usb_cam"]
 	path = catkin_ws/src/usb_cam
 	url = https://github.com/ros-drivers/usb_cam.git
+[submodule "catkin_ws/src/fiducials"]
+	path = catkin_ws/src/fiducials
+	url = https://github.com/UbiquityRobotics/fiducials.git
+[submodule "catkin_ws/src/aruco_ros"]
+	path = catkin_ws/src/aruco_ros
+	url = https://github.com/pal-robotics/aruco_ros.git
