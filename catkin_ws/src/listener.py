@@ -37,13 +37,17 @@
 ## to the 'chatter' topic
 
 import rospy
-from playsound import playsound
+import pygame
 from std_msgs.msg import String
 
 def callback(data):
     #rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
     if (data.data=="Play+DanceMusic"):
-        playsound('music.mp3')
+        pygame.mixer.init()
+        pygame.mixer.music.load("music.mp3")
+        pygame.mixer.music.play()
+        while pygame.mixer.music.get_busy() == True:
+    continue
     if (data.data=="Play+ArucoTag"):
         playsound('Found a tag.mp3')
     if (data.data=="Play+ArucoNotRec"):
