@@ -2,7 +2,7 @@
 
 """
 Voice recognition module
-Node: voice_controller
+Node: Voice_controller
 Subscribed to: aruco_listener
 Publishes  to: voice_listener
 TODO: Make roslaunch
@@ -21,7 +21,7 @@ def callback(data):
 def listener():
     global listen
     pub = rospy.Publisher('voice_listener', String, queue_size=10)
-    rospy.init_node('voice_controller', anonymous=True)
+    rospy.init_node('Voice_controller', anonymous=True)
     rospy.Subscriber("aruco_listener", String, callback)
     rate = rospy.Rate(2) #hz
     available_commands = ("left", "right", "forward", "backwards", "dance", "music", "play", "exit", "test")
@@ -39,7 +39,7 @@ def listener():
                     command_list = command.split()
                     # Only select first word of phrase (to make recognizer more robust)
                     if command_list[0] in available_commands:
-                        rospy.loginfo("Command recognized, publishing: " + command_list[0])
+                        rospy.logdebug("Command recognized, publishing: " + command_list[0])
                         pub.publish(command_list[0])
                         listen = False
                         continue
@@ -48,17 +48,17 @@ def listener():
                         rospy.loginfo("Command not recognized: " + command)
 
                 except sr.UnknownValueError:
-                    rospy.loginfo("Google Speech Recognition could not understand audio")
+                    rospy.logwarn("Google Speech Recognition could not understand audio")
 
                 except sr.RequestError as e:
-                    rospy.loginfo("Could not request results from Google Speech Recognition service; {0}".format(e))
+                    rospy.logerr("Could not request results from Google Speech Recognition service; {0}".format(e))
             else:
                 rospy.loginfo("Waiting on aruco tag")
         rate.sleep()
 
 if __name__ == '__main__':
     try:
-        rospy.loginfo("Module running")
+        rospy.logdebug("Module running")
         listener()
     except rospy.ROSInterruptException:
         pass
