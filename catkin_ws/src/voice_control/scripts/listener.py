@@ -6,9 +6,9 @@ def callback(data):
    rospy.loginfo(rospy.get_caller_id() + "I heard %s", data.data)
 
 def listener():
-    rospy.init_node('voice listener', anonymous=True)
+    rospy.init_node('voice_listener', anonymous=True)
 
-    rospy.Subscriber("chatter", String, callback)
+    rospy.Subscriber("voice_controller", String, callback)
 
     # spin() simply keeps python from exiting until this node is stopped
     rospy.spin()
