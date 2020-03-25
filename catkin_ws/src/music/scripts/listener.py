@@ -37,6 +37,7 @@
 ## to the 'chatter' topic
 
 import rospy
+from playsound import playsound
 from std_msgs.msg import String
 
 def callback(data):
@@ -50,9 +51,21 @@ def listener():
     # name for our 'listener' node so that multiple listeners can
     # run simultaneously.
     rospy.init_node('listener', anonymous=True)
-
     rospy.Subscriber('musiccmnds', String, callback)
-
+    if (data.data=="Play+DanceMusic")
+        playsound('Let\'s start dancing.mp3')
+    if (data.data=="Play+ArucoTag")
+        playsound('Found a tag.mp3')
+    if (data.data=="Play+ArucoNotRec")
+        playsound('Tag not recognized.mp3')
+    if (data.data=="Play+VoiceOn")
+        playsound('Tell me.mp3')
+    if (data.data=="Play+VoiceOff")
+        playsound('Thanks!.mp3')
+    if (data.data=="Play+VoiceNotRec")
+        playsound('Voice not recognized.mp3')
+    if (data.data=="Play+Ultrasonic")
+        playsound('Sociale distance please!.mp3')    
     # spin() simply keeps python from exiting until this node is stopped
     rospy.spin()
 
