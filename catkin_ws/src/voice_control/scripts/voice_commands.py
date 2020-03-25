@@ -5,6 +5,7 @@ Voice recognition module
 Node: voice_controller
 Subscribed to: aruco_listener
 Publishes  to: voice_listener
+TODO: Make roslaunch
 """
 import rospy
 import speech_recognition as sr
