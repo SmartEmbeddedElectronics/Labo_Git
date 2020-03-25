@@ -4,8 +4,8 @@
 import rospy
 from std_msgs.msg import String
 
-Command_camera = rospy.Publisher('Command_camera', String, queue_size=10)
-Move_controller = rospy.Publisher('Move_controller', String, queue_size=10)
+move_pub = rospy.Publisher('movement', String, queue_size=10)
+sound_pub = rospy.Publisher('sound', String, queue_size=10)
 
 
 def dance():
@@ -22,7 +22,7 @@ def foute_data(data):
     
 def movement(data):
     print data.data
-    Move_controller.publish("Recht vooruit")
+    move_pub.publish("Recht vooruit")
 
 
 def aruco(data):
