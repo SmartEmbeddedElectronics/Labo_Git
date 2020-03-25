@@ -45,12 +45,8 @@ def distance(data):
     print data.data
 
 def central_switcher():
-    #Init of all nodes (publisher and subscriber)
-    rospy.init_node('comm_cam_node', anonymous=True)
-    rospy.init_node('movement_node', anonymous=True)
-    rospy.init_node('comm_voice_node', anonymous=True)
-    rospy.init_node('comm_distance_node', anonymous=True)
-    rospy.init_node('sound_node', anonymous=True)
+    #Init of node
+    rospy.init_node('central_switcher', anonymous=True)
     #Subscribe on the aruco, distance and voice toppic
     rospy.Subscriber('comm_cam', String, aruco)
     rospy.Subscriber('comm_voice', String, voice)
