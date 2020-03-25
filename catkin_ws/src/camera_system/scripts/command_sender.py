@@ -1,24 +1,22 @@
 #!/usr/bin/env python
-# license removed for brevity
 import rospy
 from std_msgs.msg import String
+from aruco_msgs.msg import MarkerArray, Marker
 
-comm1 = rospy.Publisher('comm1', String, queue_size=10)
-comm2 = rospy.Publisher('comm2', String, queue_size=10)
+comm_cam = rospy.Publisher('comm_cam', String, queue_size=10)
+comm_v_s = rospy.Publisher('comm_voice_start', String, queue_size=10)
 
 def callback(data):
-    if data.data == "C1":
-        comm1.publish("C1 Received")
-    elif data.data == "C2":
-        comm2.publish("C2 Received")
+    print(data.header)
+    print(data.markers.id)
 
-def command_sender():
-    rospy.init_node('command_sender', anonymous=True)
-    rospy.Subscriber('commands', String, callback)
+def aruco_tag_interpret():
+    rospy.init_node('command_camera', anonymous=True)
+    rospy.Subscriber('/aruco_marker_publisher/markers', MarkerArray, callback)
     rospy.spin()
 
 if __name__ == '__main__':
     try:
-        command_sender()
+        aruco_tag_interpret()
     except rospy.ROSInterruptException:
         pass
