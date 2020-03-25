@@ -31,7 +31,7 @@ def aruco(data):
     if (data.data=="dance"):
         dance()
     elif (data.data=="home"):
-        movement(data.data)
+        movement(data)
     else:
         foute_data("Aruco")
 
