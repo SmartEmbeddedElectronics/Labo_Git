@@ -48,17 +48,17 @@ def callback(data):
         pygame.mixer.music.play()
         while pygame.mixer.music.get_busy() == True:
             continue
-    if (data.data=="Play+ArucoTag"):
+    #if (data.data=="Play+ArucoTag"):
         #playsound('Found a tag.mp3')
-    if (data.data=="Play+ArucoNotRec"):
+    #if (data.data=="Play+ArucoNotRec"):
         #playsound('Tag not recognized.mp3')
-    if (data.data=="Play+VoiceOn"):
+    #if (data.data=="Play+VoiceOn"):
         #playsound('Tell me.mp3')
-    if (data.data=="Play+VoiceOff"):
+    #if (data.data=="Play+VoiceOff"):
         #playsound('Thanks!.mp3')
-    if (data.data=="Play+VoiceNotRec"):
+    #if (data.data=="Play+VoiceNotRec"):
         #playsound('Voice not recognized.mp3')
-    if (data.data=="Play+Ultrasonic"):
+    #if (data.data=="Play+Ultrasonic"):
         #playsound('Sociale distance please!.mp3')
 def listener():
 
