@@ -37,25 +37,29 @@
 ## to the 'chatter' topic
 
 import rospy
-from playsound import playsound
+import pygame
 from std_msgs.msg import String
 
 def callback(data):
     #rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
     if (data.data=="Play+DanceMusic"):
-        playsound('Let\'s start dancing.mp3')
+        pygame.mixer.init()
+        pygame.mixer.music.load("music.mp3")
+        pygame.mixer.music.play()
+        while pygame.mixer.music.get_busy() == True:
+            continue
     if (data.data=="Play+ArucoTag"):
-        playsound('Found a tag.mp3')
+        #playsound('Found a tag.mp3')
     if (data.data=="Play+ArucoNotRec"):
-        playsound('Tag not recognized.mp3')
+        #playsound('Tag not recognized.mp3')
     if (data.data=="Play+VoiceOn"):
-        playsound('Tell me.mp3')
+        #playsound('Tell me.mp3')
     if (data.data=="Play+VoiceOff"):
-        playsound('Thanks!.mp3')
+        #playsound('Thanks!.mp3')
     if (data.data=="Play+VoiceNotRec"):
-        playsound('Voice not recognized.mp3')
+        #playsound('Voice not recognized.mp3')
     if (data.data=="Play+Ultrasonic"):
-        playsound('Sociale distance please!.mp3')
+        #playsound('Sociale distance please!.mp3')
 def listener():
 
     # In ROS, nodes are uniquely named. If two nodes with the same
