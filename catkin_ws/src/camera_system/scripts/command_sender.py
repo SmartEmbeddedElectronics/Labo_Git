@@ -8,7 +8,8 @@ comm_v_s = rospy.Publisher('comm_voice_start', String, queue_size=10)
 
 def callback(data):
     print(data.header)
-    print(data.markers.id)
+    for m in data.Markers:
+        print(m.id)
 
 def aruco_tag_interpret():
     rospy.init_node('command_camera', anonymous=True)
