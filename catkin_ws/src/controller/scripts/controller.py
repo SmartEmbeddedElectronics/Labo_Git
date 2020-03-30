@@ -23,10 +23,12 @@ def dance():
 def return_home(data):
     global movement_list
     print "Return home" #Debug print
+    print(movement_list)
     for st in reversed(movement_list):
         #Reminder: reverse speed
         move_pub.publish(st)
-    movement_list.clear()
+    del movement_list[:]
+    print(movement_list)
 
 def foute_data(data):
     print "Foute data" #Debug print
