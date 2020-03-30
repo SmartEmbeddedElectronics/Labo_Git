@@ -39,7 +39,7 @@ def movement(data):
     print data.data #Debug print
     global var_move
     var_move+=1
-    movement_list.append("Straigt "+var_move)
+    movement_list.append("Straigt "+str(var_move))
     
     move_pub.publish("Go straight")
     print movement_list
