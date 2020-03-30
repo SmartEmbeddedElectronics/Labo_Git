@@ -21,6 +21,7 @@ def dance():
 
 
 def return_home(data):
+    global movement_list
     print "Return home" #Debug print
     for st in reversed(movement_list):
         #Reminder: reverse speed
