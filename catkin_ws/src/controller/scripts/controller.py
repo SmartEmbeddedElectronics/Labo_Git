@@ -25,6 +25,7 @@ def return_home(data):
     for st in reversed(movement_list):
         #Reminder: reverse speed
         move_pub.publish(st)
+    movement_list.clear()
 
 def foute_data(data):
     print "Foute data" #Debug print
