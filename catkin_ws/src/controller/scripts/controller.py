@@ -7,42 +7,75 @@ from std_msgs.msg import String
 move_pub = rospy.Publisher('movement', String, queue_size=10)
 sound_pub = rospy.Publisher('sound', String, queue_size=10)
 
+var_move = 0 #Debug var
+
+#List to remember the movenments of the bot, so it can return home
+movement_list = list()
 
 def dance():
-    print "Dance"
+    print "Dance" #Debug print
+    move_pub.publish("Command 1")
+    move_pub.publish("Command 2")
+    move_pub.publish("Command 3")
+    sound_pub.publish("Start dance song")
+
 
 def return_home():
-    print "Return home"
-
+    print "Return home" #Debug print
+    for st in reversed(movement_list):
+        #Reminder: reverse speed
+        move_pub.publish(st)
 
 def foute_data(data):
-    print "Foute data"
+    print "Foute data" #Debug print
     print data
 
+
+def stop():
+    print "Bot stop"
+    move_pub.publish("Snelheid = 0")
     
 def movement(data):
-    print data.data
-    move_pub.publish("Recht vooruit")
+    print data.data #Debug print
+    movement_list.append("Straigt "+var_move)
+    var_move+=1
+    move_pub.publish("Go straight")
+    print movement_list
 
-
+#Handels the strings that come from toppic comm_cam
 def aruco(data):
-    print data.data
+    print data.data #Debug print
     #Determine command
     if (data.data=="dance"):
         dance()
     elif (data.data=="home"):
+        return_home(data)
+    elif (data.data=="go"):
         movement(data)
     else:
         foute_data("Aruco")
 
 
 
+#Handels the strings that come from toppic comm_voice
 def voice(data):
-    print data.data
+    print data.data #Debug print
+    if (data.data=="dance"):
+        dance()
+    elif (data.data=="home"):
+        return_home(data)
+    elif (data.data=="go"):
+        movement(data)
+    else:
+        foute_data("Aruco")
 
-
+#Handels the strings that come from toppic comm_distance
 def distance(data):
-    print data.data
+    print data.data #Debug print
+    if (data.data=="stop"):
+        stop()
+    else:
+        foute_data("Aruco")
 
 def central_switcher():
     #Init of node
