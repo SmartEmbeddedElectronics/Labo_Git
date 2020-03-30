@@ -20,7 +20,7 @@ def dance():
     sound_pub.publish("Start dance song")
 
 
-def return_home():
+def return_home(data):
     print "Return home" #Debug print
     for st in reversed(movement_list):
         #Reminder: reverse speed
@@ -37,6 +37,7 @@ def stop():
     
 def movement(data):
     print data.data #Debug print
+    global var_move
     var_move+=1
     movement_list.append("Straigt "+var_move)
     
