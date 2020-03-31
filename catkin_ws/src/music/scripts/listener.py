@@ -44,22 +44,46 @@ def callback(data):
     #rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
     if (data.data=="Play+DanceMusic"):
         pygame.mixer.init()
-        pygame.mixer.music.load("music.mp3")
+        pygame.mixer.music.load("startdancing.mp3")
         pygame.mixer.music.play()
         while pygame.mixer.music.get_busy() == True:
             continue
-    #if (data.data=="Play+ArucoTag"):
-        #playsound('Found a tag.mp3')
-    #if (data.data=="Play+ArucoNotRec"):
-        #playsound('Tag not recognized.mp3')
-    #if (data.data=="Play+VoiceOn"):
-        #playsound('Tell me.mp3')
-    #if (data.data=="Play+VoiceOff"):
-        #playsound('Thanks!.mp3')
-    #if (data.data=="Play+VoiceNotRec"):
-        #playsound('Voice not recognized.mp3')
-    #if (data.data=="Play+Ultrasonic"):
-        #playsound('Sociale distance please!.mp3')
+    if (data.data=="Play+ArucoTag"):
+        pygame.mixer.init()
+        pygame.mixer.music.load("foundtag.mp3")
+        pygame.mixer.music.play()
+        while pygame.mixer.music.get_busy() == True:
+            continue
+    if (data.data=="Play+ArucoNotRec"):
+        pygame.mixer.init()
+        pygame.mixer.music.load("tagnotrecogn.mp3")
+        pygame.mixer.music.play()
+        while pygame.mixer.music.get_busy() == True:
+            continue
+    if (data.data=="Play+VoiceOn"):
+        pygame.mixer.init()
+        pygame.mixer.music.load("tellme.mp3")
+        pygame.mixer.music.play()
+        while pygame.mixer.music.get_busy() == True:
+            continue
+    if (data.data=="Play+VoiceOff"):
+        pygame.mixer.init()
+        pygame.mixer.music.load("thanks.mp3")
+        pygame.mixer.music.play()
+        while pygame.mixer.music.get_busy() == True:
+            continue
+    if (data.data=="Play+VoiceNotRec"):
+        pygame.mixer.init()
+        pygame.mixer.music.load("voicenotrecogn.mp3")
+        pygame.mixer.music.play()
+        while pygame.mixer.music.get_busy() == True:
+            continue
+    if (data.data=="Play+Ultrasonic"):
+        pygame.mixer.init()
+        pygame.mixer.music.load("socialdistance.mp3")
+        pygame.mixer.music.play()
+        while pygame.mixer.music.get_busy() == True:
+            continue
 def listener():
 
     # In ROS, nodes are uniquely named. If two nodes with the same
