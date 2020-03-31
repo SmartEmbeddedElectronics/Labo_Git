@@ -3,8 +3,8 @@
 """
 Voice recognition module
 Node: Voice_controller
-Subscribed to: aruco_listener
-Publishes  to: voice_listener
+Subscribed to: comm_voice_start
+Publishes  to: comm_voice
 TODO: Make roslaunch
 """
 import rospy
@@ -20,9 +20,9 @@ def callback(data):
 
 def listener():
     global listen
-    pub = rospy.Publisher('voice_listener', String, queue_size=10)
+    pub = rospy.Publisher('comm_voice', String, queue_size=10)
     rospy.init_node('Voice_controller', anonymous=True)
-    rospy.Subscriber("aruco_listener", String, callback)
+    rospy.Subscriber("comm_voice_start", String, callback)
     rate = rospy.Rate(2) #hz
     available_commands = ("left", "right", "forward", "backwards", "dance", "music", "play", "exit", "test")
     command = ""
@@ -48,7 +48,7 @@ def listener():
                         rospy.loginfo("Command not recognized: " + command)
 
                 except sr.UnknownValueError:
-                    rospy.logwarn("Google Speech Recognition could not understand audio")
+                    rospy.logwarn("Google Speech Recognition could not understand audio. Try again.")
 
                 except sr.RequestError as e:
                     rospy.logerr("Could not request results from Google Speech Recognition service; {0}".format(e))
