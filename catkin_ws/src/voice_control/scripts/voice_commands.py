@@ -7,18 +7,37 @@ Subscribed to: comm_voice_start
 Publishes  to: comm_voice
 TODO: Make roslaunch
 """
+
 import rospy
 import speech_recognition as sr
 from std_msgs.msg import String
 
+
 listen = False
+
+def levenshteinDistance(s1, s2):
+    if len(s1) > len(s2):
+        s1, s2 = s2, s1
+
+    distances = range(len(s1) + 1)
+    for i2, c2 in enumerate(s2):
+        distances_ = [i2+1]
+        for i1, c1 in enumerate(s1):
+            if c1 == c2:
+                distances_.append(distances[i1])
+            else:
+                distances_.append(1 + min((distances[i1], distances[i1 + 1], distances_[-1])))
+        distances = distances_
+    return distances[-1]
+
 
 def callback(data):
     global listen
     listen = True
     rospy.loginfo("Aruco tag received: " + str(data))
 
-def listener():
+
+def listener(threshold = 3):
     global listen
     pub = rospy.Publisher('comm_voice', String, queue_size=10)
     rospy.init_node('Voice_controller', anonymous=True)
@@ -39,13 +58,27 @@ def listener():
                     command_list = command.split()
                     # Only select first word of phrase (to make recognizer more robust)
                     if command_list[0] in available_commands:
-                        rospy.logdebug("Command recognized, publishing: " + command_list[0])
+                        rospy.loginfo("Command recognized, publishing: " + command_list[0])
                         pub.publish(command_list[0])
                         listen = False
                         continue
 
                     else :
                         rospy.loginfo("Command not recognized: " + command)
+                        rospy.loginfo("Trying to find similar commands...")
+                        distance = None
+                        correct_command = ""
+                        # Find strings with most similarities using Levenshteins distance
+                        for available_command in available_commands:
+                            if distance > levenshteinDistance(command_list[0], available_command) or distance == None:
+                                distance = levenshteinDistance(command_list[0], available_command)
+                                correct_command = available_command
+
+                        if distance <= threshold:
+                            rospy.loginfo("Command corrected to: " + correct_command + ", publishing.")
+                            pub.publish(correct_command)
+                            listen = False
+                            continue
 
                 except sr.UnknownValueError:
                     rospy.logwarn("Google Speech Recognition could not understand audio. Try again.")
