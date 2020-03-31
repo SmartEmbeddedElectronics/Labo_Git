@@ -72,7 +72,7 @@ def listener(available_commands = None, threshold = 3, frequency = 2):
     rospy.Subscriber("comm_voice_start", String, callback)
     rate = rospy.Rate(frequency) #hz
     if available_commands == None:
-        available_commands = ("left", "right", "forward", "backwards", "dance", "music", "play", "exit", "test")
+        available_commands = ("left", "right", "forward", "backwards", "dance", "music", "play", "exit", "test", "home", "go")
     command = ""
     while not rospy.is_shutdown():
         # Obtain audio from the microphone
