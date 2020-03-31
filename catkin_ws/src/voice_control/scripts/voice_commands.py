@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 
 """
-Voice recognition module
-Node: Voice_controller
-Subscribed to: comm_voice_start
-Publishes  to: comm_voice
-TODO: Make roslaunch
+Voice recognition module:
+    ----------------------------------------
+    |   Node: Voice_controller             |
+    |   Subscribed to: comm_voice_start    |
+    |   Publishes  to: comm_voice          |
+    ----------------------------------------
 """
 
 import rospy
@@ -16,6 +17,16 @@ from std_msgs.msg import String
 listen = False
 
 def levenshteinDistance(s1, s2):
+    """
+    Calculates the Levenshtein distance between two strings.
+
+    Arguments:
+        s1 {String} -- first string to match
+        s2 {String} -- second string to match
+
+    Returns:
+        int -- the Levenshtein distance.
+    """
     if len(s1) > len(s2):
         s1, s2 = s2, s1
 
@@ -32,18 +43,36 @@ def levenshteinDistance(s1, s2):
 
 
 def callback(data):
+    """
+    Callback function for the comm_voice_start topic.
+    Sets the global listen flag on True, to start listening for a voice.
+
+    Arguments:
+        data {String} -- Data from topic comm_voice_starts
+    """
     global listen
     listen = True
     rospy.loginfo("Aruco tag received: " + str(data))
 
 
-def listener(threshold = 3):
+def listener(available_commands = None, threshold = 3, frequency = 2):
+    """
+    Listens to speech and uses the Google TTS API for transforming this speech to text.
+    Then this text gets interpreted (and/or corrected) to a valid command.
+    This valid command then gets outputted on the comm_voice topic.
+
+    Keyword Arguments:
+        available_commands {Tupple[Strings]} -- Tupple of all available commands that can be used  (default: {None})
+        threshold {int} -- Threshold for the maximum allowed Levenshtein distance  (default: {3})
+        frequency {int} -- Frequency of while function (in Hertz)  (default: {2})
+    """
     global listen
     pub = rospy.Publisher('comm_voice', String, queue_size=10)
     rospy.init_node('Voice_controller', anonymous=True)
     rospy.Subscriber("comm_voice_start", String, callback)
-    rate = rospy.Rate(2) #hz
-    available_commands = ("left", "right", "forward", "backwards", "dance", "music", "play", "exit", "test")
+    rate = rospy.Rate(frequency) #hz
+    if available_commands == None:
+        available_commands = ("left", "right", "forward", "backwards", "dance", "music", "play", "exit", "test")
     command = ""
     while not rospy.is_shutdown():
         # Obtain audio from the microphone
