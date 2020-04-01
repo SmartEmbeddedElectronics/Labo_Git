@@ -30,7 +30,7 @@ def callback(data):
 	        comm_cam.publish("move+" + str(distance))
 	    else:
 	        comm_cam.publish("error")
-        print(m.id)
+        print(now, m.id)
 
 def aruco_tag_interpret():
     rospy.init_node('command_camera', anonymous=True)
