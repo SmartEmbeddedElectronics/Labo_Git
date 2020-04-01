@@ -2,7 +2,7 @@
 
 import rospy
 from std_msgs.msg import String
-pub = rospy.Publisher('comm_distance', String, queue_size=10)
+pub = rospy.Publisher('stop', String, queue_size=10)
 
 def callback(data):
     distance = data.data
