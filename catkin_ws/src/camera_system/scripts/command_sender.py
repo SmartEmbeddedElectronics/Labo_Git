@@ -17,6 +17,7 @@ def callback(data):
 	    print("Too early")
 	else:
 	    prev_time = now
+	    prev_id = m.id
             if m.id == 1:
 	        comm_cam.publish("dance")
             elif m.id == 2:
