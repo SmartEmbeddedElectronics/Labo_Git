@@ -43,42 +43,49 @@ from std_msgs.msg import String
 def callback(data):
     #rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
     if (data.data=="Play+DanceMusic"):
+        rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
         pygame.mixer.init()
         pygame.mixer.music.load("startdancing.mp3")
         pygame.mixer.music.play()
         while pygame.mixer.music.get_busy() == True:
             continue
     if (data.data=="Play+ArucoTag"):
+        rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
         pygame.mixer.init()
         pygame.mixer.music.load("foundtag.mp3")
         pygame.mixer.music.play()
         while pygame.mixer.music.get_busy() == True:
             continue
     if (data.data=="Play+ArucoNotRec"):
+        rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
         pygame.mixer.init()
         pygame.mixer.music.load("tagnotrecogn.mp3")
         pygame.mixer.music.play()
         while pygame.mixer.music.get_busy() == True:
             continue
     if (data.data=="Play+VoiceOn"):
+        rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
         pygame.mixer.init()
         pygame.mixer.music.load("tellme.mp3")
         pygame.mixer.music.play()
         while pygame.mixer.music.get_busy() == True:
             continue
     if (data.data=="Play+VoiceOff"):
+        rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
         pygame.mixer.init()
         pygame.mixer.music.load("thanks.mp3")
         pygame.mixer.music.play()
         while pygame.mixer.music.get_busy() == True:
             continue
     if (data.data=="Play+VoiceNotRec"):
+        rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
         pygame.mixer.init()
         pygame.mixer.music.load("voicenotrecogn.mp3")
         pygame.mixer.music.play()
         while pygame.mixer.music.get_busy() == True:
             continue
     if (data.data=="Play+Ultrasonic"):
+        rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
         pygame.mixer.init()
         pygame.mixer.music.load("socialdistance.mp3")
         pygame.mixer.music.play()
@@ -91,8 +98,8 @@ def listener():
     # anonymous=True flag means that rospy will choose a unique
     # name for our 'listener' node so that multiple listeners can
     # run simultaneously.
-    rospy.init_node('listener', anonymous=True)
-    rospy.Subscriber('musiccmnds', String, callback)
+    rospy.init_node('Sound_controller', anonymous=True)
+    rospy.Subscriber('sound', String, callback)
 
     # spin() simply keeps python from exiting until this node is stopped
     rospy.spin()
