@@ -8,6 +8,19 @@ comm_v_s = rospy.Publisher('comm_voice_start', String, queue_size=10)
 
 def callback(data):
     for m in data.markers:
+	if m.id == 1:
+		comm_cam.publish("dance")
+	elif m.id == 2:
+		comm_cam.publish("home")
+	elif m.id == 3:
+		comm_cam.publish("play")
+	elif m.id == 4:
+		comm_v_s.publish("start")
+	elif m.id > 100 and m.id < 200:
+		distance = m.id - 100
+		comm_cam.publish("move+" + distance)
+	else:
+		comm_cam.publish("error")
         print(m.id)
 
 def aruco_tag_interpret():
