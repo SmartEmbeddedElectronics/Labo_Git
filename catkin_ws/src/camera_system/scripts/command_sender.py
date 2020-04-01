@@ -7,8 +7,7 @@ comm_cam = rospy.Publisher('comm_cam', String, queue_size=10)
 comm_v_s = rospy.Publisher('comm_voice_start', String, queue_size=10)
 
 def callback(data):
-    print(data.header)
-    for m in data.Markers:
+    for m in data.markers:
         print(m.id)
 
 def aruco_tag_interpret():
