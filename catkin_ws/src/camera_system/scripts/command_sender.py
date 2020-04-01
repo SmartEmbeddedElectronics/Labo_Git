@@ -18,7 +18,7 @@ def callback(data):
 		comm_v_s.publish("start")
 	elif m.id > 100 and m.id < 200:
 		distance = m.id - 100
-		comm_cam.publish("move+" + distance)
+		comm_cam.publish("move+" + str(distance))
 	else:
 		comm_cam.publish("error")
         print(m.id)
