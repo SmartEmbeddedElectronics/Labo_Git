@@ -7,8 +7,8 @@ def callback(data):
     distance = data.data
     rospy.loginfo(rospy.get_caller_id() + ' I heard %s', distance)
     if distance<5: #distance in cm
-        pub.publish('STOP')
         rospy.loginfo(rospy.get_caller_id() + 'STOP signal has been sent')
+        pub.publish('STOP')
         
 
 def listener():
