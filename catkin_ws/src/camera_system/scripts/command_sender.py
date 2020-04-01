@@ -11,6 +11,7 @@ prev_time = time()
 prev_id = 0
 
 def callback(data):
+    global prev_id, prev_time
     now = time()
     for m in data.markers:
 	if m.id == prev_id and now - prev_time < 10:
