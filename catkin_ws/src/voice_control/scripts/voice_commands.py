@@ -62,7 +62,7 @@ def listener(available_commands = None, threshold = 3, frequency = 2):
     This valid command then gets outputted on the comm_voice topic.
 
     Keyword Arguments:
-        available_commands {Tupple[Strings]} -- Tupple of all available commands that can be used  (default: {None})
+        available_commands {Tuple[Strings]} -- Tuple of all available commands that can be used  (default: {None})
         threshold {int} -- Threshold for the maximum allowed Levenshtein distance  (default: {3})
         frequency {int} -- Frequency of while function (in Hertz)  (default: {2})
     """
@@ -72,7 +72,7 @@ def listener(available_commands = None, threshold = 3, frequency = 2):
     rospy.Subscriber("comm_voice_start", String, callback)
     rate = rospy.Rate(frequency) #hz
     if available_commands == None:
-        available_commands = ("left", "right", "forward", "backwards", "dance", "music", "play", "exit", "test", "home", "go")
+        available_commands = ("left", "right", "forward", "backwards", "dance", "music", "exit", "home", "go", "stop")
     command = ""
     while not rospy.is_shutdown():
         # Obtain audio from the microphone
