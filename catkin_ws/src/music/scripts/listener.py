@@ -39,12 +39,12 @@
 import rospy
 import pygame
 from std_msgs.msg import String
+pygame.init()
 
 def callback(data):
     #rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
     if (data.data=="Play+DanceMusic"):
         rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
-        pygame.mixer.init()
         pygame.mixer.music.load('music.mp3')
         pygame.mixer.music.play()
         while pygame.mixer.music.get_busy() == True:
