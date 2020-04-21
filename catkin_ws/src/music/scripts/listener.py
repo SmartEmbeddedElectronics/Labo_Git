@@ -52,7 +52,7 @@ def callback(data):
     if (data.data=="Play+ArucoTag"):
         rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
         pygame.mixer.init()
-        pygame.mixer.music.load("foundtag.mp3")
+        pygame.mixer.music.load('foundtag.mp3')
         pygame.mixer.music.play()
         while pygame.mixer.music.get_busy() == True:
             continue
