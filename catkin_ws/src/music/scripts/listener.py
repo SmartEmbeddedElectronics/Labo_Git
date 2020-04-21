@@ -47,49 +47,49 @@ def callback(data):
     #rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
     if (data.data=="Play+DanceMusic"):
         rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
-        pygame.mixer.music.load('music.mp3')
+        pygame.mixer.music.load(current_path, 'music.mp3')
         pygame.mixer.music.play()
         while pygame.mixer.music.get_busy() == True:
             continue
     if (data.data=="Play+ArucoTag"):
         rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
         pygame.mixer.init()
-        pygame.mixer.music.load(os.path.join(image_path, 'foundtag.mp3'))
+        pygame.mixer.music.load(os.path.join(current_path, 'foundtag.mp3'))
         pygame.mixer.music.play()
         while pygame.mixer.music.get_busy() == True:
             continue
     if (data.data=="Play+ArucoNotRec"):
         rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
         pygame.mixer.init()
-        pygame.mixer.music.load("tagnotrecogn.mp3")
+        pygame.mixer.music.load(current_path, "tagnotrecogn.mp3")
         pygame.mixer.music.play()
         while pygame.mixer.music.get_busy() == True:
             continue
     if (data.data=="Play+VoiceOn"):
         rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
         pygame.mixer.init()
-        pygame.mixer.music.load("tellme.mp3")
+        pygame.mixer.music.load(current_path, "tellme.mp3")
         pygame.mixer.music.play()
         while pygame.mixer.music.get_busy() == True:
             continue
     if (data.data=="Play+VoiceOff"):
         rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
         pygame.mixer.init()
-        pygame.mixer.music.load("thanks.mp3")
+        pygame.mixer.music.load(current_path, "thanks.mp3")
         pygame.mixer.music.play()
         while pygame.mixer.music.get_busy() == True:
             continue
     if (data.data=="Play+VoiceNotRec"):
         rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
         pygame.mixer.init()
-        pygame.mixer.music.load("voicenotrecogn.mp3")
+        pygame.mixer.music.load(current_path, "voicenotrecogn.mp3")
         pygame.mixer.music.play()
         while pygame.mixer.music.get_busy() == True:
             continue
     if (data.data=="Play+Ultrasonic"):
         rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
         pygame.mixer.init()
-        pygame.mixer.music.load("socialdistance.mp3")
+        pygame.mixer.music.load(current_path, "socialdistance.mp3")
         pygame.mixer.music.play()
         while pygame.mixer.music.get_busy() == True:
             continue
