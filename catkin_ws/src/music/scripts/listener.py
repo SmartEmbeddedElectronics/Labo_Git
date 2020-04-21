@@ -37,9 +37,11 @@
 ## to the 'chatter' topic
 
 import rospy
+import os
 import pygame
 from std_msgs.msg import String
 pygame.init()
+current_path = os.path.dirname(__file__)
 
 def callback(data):
     #rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
@@ -52,7 +54,7 @@ def callback(data):
     if (data.data=="Play+ArucoTag"):
         rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
         pygame.mixer.init()
-        pygame.mixer.music.load('./foundtag.mp3')
+        pygame.mixer.music.load(os.path.join(image_path, 'foundtag.mp3'))
         pygame.mixer.music.play()
         while pygame.mixer.music.get_busy() == True:
             continue
