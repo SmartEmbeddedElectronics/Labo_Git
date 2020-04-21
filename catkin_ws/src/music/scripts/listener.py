@@ -47,6 +47,10 @@ def callback(data):
     #rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
     if (data.data=="Play+DanceMusic"):
         rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
+        pygame.mixer.music.load(os.path.join(current_path, 'startdancing.mp3'))
+        pygame.mixer.music.play()
+        while pygame.mixer.music.get_busy() == True:
+            continue
         pygame.mixer.music.load(os.path.join(current_path, 'music.mp3'))
         pygame.mixer.music.play()
         while pygame.mixer.music.get_busy() == True:
