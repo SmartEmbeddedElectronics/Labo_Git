@@ -43,10 +43,10 @@ def callback(data):
                 print "tag+stop d"
 
 	    print "\rTracking",
-            print posx,
-            print m.pose.pose.position.y,
-            print posz,
-            print deg,
+            print "%.2f" % posx,
+            print "%.2f" % m.pose.pose.position.y,
+            print "%.2f" % posz,
+            print "%.2f" % deg,
             sys.stdout.flush()
 
 def aruco_tag_tracking():
