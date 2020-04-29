@@ -23,7 +23,7 @@ def callback(data):
 	if m.id == 5:
             if timeout is not None:
                 timeout.shutdown()
-            timeout = rospy.Timer(rospy.Duration(0.3), timeout_callback, oneshot=True)
+            timeout = rospy.Timer(rospy.Duration(1), timeout_callback, oneshot=True)
 
             posx = m.pose.pose.position.x
             posz = m.pose.pose.position.z
