@@ -14,8 +14,11 @@ driving = False
 timeout = None
 
 def timeout_callback(event):
+    global timeout, turning, driving
+    turning = False
+    driving = False
     timeout = None
-    print "tag+stop!"
+    comm_pos.publish("tag+stop")
 
 def callback(data):
     global timeout, turning, driving
@@ -31,16 +34,16 @@ def callback(data):
 
             if not turning and (deg > 10 or deg < -10):
                 turning = True
-                print "tag+r"
+                comm_pos.publish("tag+r")
             elif turning and (deg < 10 and  deg > -10):
                 turning = False
-                print "tag+stop t"
+                comm_pos.publish("tag+stop")
             elif not driving and posz > 0.5:
                 driving = True
-                print "tag+d"
+                comm_pos.publish("tag+d")
             elif driving and posz < 0.5:
                 driving = False
-                print "tag+stop d"
+                comm_pos.publish("tag+stop")
 
 	    print "\rTracking",
             print "%.2f" % posx,
