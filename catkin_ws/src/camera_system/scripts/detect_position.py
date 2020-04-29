@@ -18,6 +18,7 @@ def timeout_callback(event):
     print "tag+stop"
 
 def callback(data):
+    global timeout
     for m in data.markers:
 	if m.id == 5:
             if timeout is not None:
