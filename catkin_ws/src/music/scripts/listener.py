@@ -50,7 +50,11 @@ def callback(data):
         pygame.mixer.music.load(os.path.join(current_path, 'startdancing.mp3'))
         pygame.mixer.music.play()
         while pygame.mixer.music.get_busy() == True:
+            if ("Play" in data.data):
+                callback(data)
+                break;
             continue
+
         pygame.mixer.music.load(os.path.join(current_path, 'music.mp3'))
         pygame.mixer.music.play()
         while pygame.mixer.music.get_busy() == True:
