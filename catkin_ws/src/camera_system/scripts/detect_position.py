@@ -15,7 +15,7 @@ timeout = None
 
 def timeout_callback(event):
     timeout = None
-    print "tag+stop"
+    print "tag+stop!"
 
 def callback(data):
     global timeout, turning, driving
@@ -34,13 +34,13 @@ def callback(data):
                 print "tag+r"
             elif turning and (deg < 10 and  deg > -10):
                 turning = False
-                print "tag+stop"
+                print "tag+stop t"
             elif not driving and posz > 0.5:
                 driving = True
                 print "tag+d"
             elif driving and posz < 0.5:
                 driving = False
-                print "tag+stop"
+                print "tag+stop d"
 
 	    print "\rTracking",
             print posx,
