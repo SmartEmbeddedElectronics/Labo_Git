@@ -16,7 +16,7 @@ def callback(data):
 
 def listener():
     rospy.init_node('listener2', anonymous=True)
-    rospy.Subscriber('/sonar_dist', String, callback)
+    rospy.Subscriber('/sonar_dist2', String, callback)
 
     
     
