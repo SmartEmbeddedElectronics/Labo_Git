@@ -1,129 +1,172 @@
-"""
-Sources
+# Copyright 2012 Free Software Foundation, Inc.
+#
+# This file is part of The BPM Detector Python
+#
+# The BPM Detector Python is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3, or (at your option)
+# any later version.
+#
+# The BPM Detector Python is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with The BPM Detector Python; see the file COPYING.  If not, write to
+# the Free Software Foundation, Inc., 51 Franklin Street,
+# Boston, MA 02110-1301, USA.
 
-http://www.swharden.com/blog/2013-05-09-realtime-fft-audio-visualization-with-python/
-http://julip.co/2012/05/arduino-python-soundlight-spectrum/
-"""
+import wave, array, math, time, argparse, sys
+import numpy, pywt
+from scipy import signal
+import pdb
+import matplotlib.pyplot as plt
+from pydub import AudioSegment
+current_path = os.path.dirname(__file__)
 
-import ui_plot
-import sys
-import numpy
-from PyQt4 import QtCore, QtGui
-import PyQt4.Qwt5 as Qwt
-from recorder import *
-from time import perf_counter
+sound = AudioSegment.from_mp3(os.path.join(current_path, 'startdancing.mp3'))
+sound.export(os.path.join("/output/path/file.wav", format="mp3"))
 
-try:
-    _fromUtf8 = QtCore.QString.fromUtf8
-except AttributeError:
-    _fromUtf8 = lambda s: s
+def read_wav(filename):
 
-colors_list = ["red", "blue", "green"]
-colors_idx = 0;
-
-bpm_list = []
-prev_beat = perf_counter()
-low_freq_avg_list = []
-
-def plot_audio_and_detect_beats():
-    if not input_recorder.has_new_audio:
+    #open file, get metadata for audio
+    try:
+        wf = wave.open(filename,'rb')
+    except IOError, e:
+        print e
         return
 
-    # get x and y values from FFT
-    xs, ys = input_recorder.fft()
+    # typ = choose_type( wf.getsampwidth() ) #TODO: implement choose_type
+    nsamps = wf.getnframes();
+    assert(nsamps > 0);
 
-    # calculate average for all frequency ranges
-    y_avg = numpy.mean(ys)
+    fs = wf.getframerate()
+    assert(fs > 0)
 
-    # calculate low frequency average
-    low_freq = [ys[i] for i in range(len(xs)) if xs[i] < 1000]
-    low_freq_avg = numpy.mean(low_freq)
+    # read entire file and make into an array
+    samps = list(array.array('i',wf.readframes(nsamps)))
+    #print 'Read', nsamps,'samples from', filename
+    try:
+        assert(nsamps == len(samps))
+    except AssertionError, e:
+        print  nsamps, "not equal to", len(samps)
 
-    global low_freq_avg_list
-    low_freq_avg_list.append(low_freq_avg)
-    cumulative_avg = numpy.mean(low_freq_avg_list)
+    return samps, fs
 
-    bass = low_freq[:int(len(low_freq)/2)]
-    bass_avg = numpy.mean(bass)
-    # print("bass: {:.2f} vs cumulative: {:.2f}".format(bass_avg, cumulative_avg))
+# print an error when no data can be found
+def no_audio_data():
+    print "No audio data for sample, skipping..."
+    return None, None
 
-    # check if there is a beat
-    # song is pretty uniform across all frequencies
-    if (y_avg > 10 and (bass_avg > cumulative_avg * 1.5 or
-            (low_freq_avg < y_avg * 1.2 and bass_avg > cumulative_avg))):
-        global prev_beat
-        curr_time = perf_counter()
-        # print(curr_time - prev_beat)
-        if curr_time - prev_beat > 60/180: # 180 BPM max
-            # print("beat")
-            # change the button color
-            global colors_idx
-            colors_idx += 1;
-            uiplot.btnD.setStyleSheet("background-color: {:s}".format(colors_list[colors_idx % len(colors_list)]))
+# simple peak detection
+def peak_detect(data):
+    max_val = numpy.amax(abs(data))
+    peak_ndx = numpy.where(data==max_val)
+    if len(peak_ndx[0]) == 0: #if nothing found then the max must be negative
+        peak_ndx = numpy.where(data==-max_val)
+    return peak_ndx
 
-            # change the button text
-            global bpm_list
-            bpm = int(60 / (curr_time - prev_beat))
-            if len(bpm_list) < 4:
-                if bpm > 60:
-                    bpm_list.append(bpm)
-            else:
-                bpm_avg = int(numpy.mean(bpm_list))
-                if abs(bpm_avg - bpm) < 35:
-                    bpm_list.append(bpm)
-                uiplot.btnD.setText(_fromUtf8("BPM: {:d}".format(bpm_avg)))
+def bpm_detector(data,fs):
+    cA = []
+    cD = []
+    correl = []
+    cD_sum = []
+    levels = 4
+    max_decimation = 2**(levels-1);
+    min_ndx = 60./ 220 * (fs/max_decimation)
+    max_ndx = 60./ 40 * (fs/max_decimation)
 
-            # reset the timer
-            prev_beat = curr_time
+    for loop in range(0,levels):
+        cD = []
+        # 1) DWT
+        if loop == 0:
+            [cA,cD] = pywt.dwt(data,'db4');
+            cD_minlen = len(cD)/max_decimation+1;
+            cD_sum = numpy.zeros(cD_minlen);
+        else:
+            [cA,cD] = pywt.dwt(cA,'db4');
+        # 2) Filter
+        cD = signal.lfilter([0.01],[1 -0.99],cD);
 
-    # shorten the cumulative list to account for changes in dynamics
-    if len(low_freq_avg_list) > 50:
-        low_freq_avg_list = low_freq_avg_list[25:]
-        # print("REFRESH!!")
+        # 4) Subtractargs.filename out the mean.
 
-    # keep two 8-counts of BPMs so we can maybe catch tempo changes
-    if len(bpm_list) > 24:
-        bpm_list = bpm_list[8:]
+        # 5) Decimate for reconstruction later.
+        cD = abs(cD[::(2**(levels-loop-1))]);
+        cD = cD - numpy.mean(cD);
+        # 6) Recombine the signal before ACF
+        #    essentially, each level I concatenate
+        #    the detail coefs (i.e. the HPF values)
+        #    to the beginning of the array
+        cD_sum = cD[0:cD_minlen] + cD_sum;
 
-    # reset song data if the song has stopped
-    if y_avg < 10:
-        bpm_list = []
-        low_freq_avg_list = []
-        uiplot.btnD.setText(_fromUtf8("BPM"))
-        # print("new song")
+    if [b for b in cA if b != 0.0] == []:
+        return no_audio_data()
+    # adding in the approximate data as well...
+    cA = signal.lfilter([0.01],[1 -0.99],cA);
+    cA = abs(cA);
+    cA = cA - numpy.mean(cA);
+    cD_sum = cA[0:cD_minlen] + cD_sum;
 
-    # plot the data
-    c.setData(xs, ys)
-    uiplot.qwtPlot.replot()
-    input_recorder.newAudio = False
+    # ACF
+    correl = numpy.correlate(cD_sum,cD_sum,'full')
 
-if __name__ == "__main__":
-    app = QtGui.QApplication(sys.argv)
+    midpoint = len(correl) / 2
+    correl_midpoint_tmp = correl[midpoint:]
+    peak_ndx = peak_detect(correl_midpoint_tmp[min_ndx:max_ndx]);
+    if len(peak_ndx) > 1:
+        return no_audio_data()
 
-    win_plot = ui_plot.QtGui.QMainWindow()
-    uiplot = ui_plot.Ui_win_plot()
-    uiplot.setupUi(win_plot)
-    # uiplot.btnA.clicked.connect(plot_audio_and_detect_beats)
-    # uiplot.btnB.clicked.connect(lambda: uiplot.timer.setInterval(100.0))
-    # uiplot.btnC.clicked.connect(lambda: uiplot.timer.setInterval(10.0))
-    # uiplot.btnD.clicked.connect(lambda: uiplot.timer.setInterval(1.0))
-    c = Qwt.QwtPlotCurve()
-    c.attach(uiplot.qwtPlot)
+    peak_ndx_adjusted = peak_ndx[0]+min_ndx;
+    bpm = 60./ peak_ndx_adjusted * (fs/max_decimation)
+    print bpm
+    return bpm,correl
 
-    uiplot.qwtPlot.setAxisScale(uiplot.qwtPlot.yLeft, 0, 100000)
 
-    uiplot.timer = QtCore.QTimer()
-    uiplot.timer.start(1.0)
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Process .wav file to determine the Beats Per Minute.')
+    parser.add_argument('--filename', required=True,
+                   help='.wav file for processing')
+    parser.add_argument('--window', type=float, default=3,
+                   help='size of the the window (seconds) that will be scanned to determine the bpm.  Typically less than 10 seconds. [3]')
 
-    win_plot.connect(uiplot.timer, QtCore.SIGNAL('timeout()'), plot_audio_and_detect_beats)
+    args = parser.parse_args()
+    samps,fs = read_wav(args.filename)
 
-    input_recorder = InputRecorder()
-    input_recorder.start()
+    data = []
+    correl=[]
+    bpm = 0
+    n=0;
+    nsamps = len(samps)
+    window_samps = int(args.window*fs)
+    samps_ndx = 0;  #first sample in window_ndx
+    max_window_ndx = nsamps / window_samps;
+    bpms = numpy.zeros(max_window_ndx)
 
-    ### DISPLAY WINDOWS
-    win_plot.show()
-    code = app.exec_()
+    #iterate through all windows
+    for window_ndx in xrange(0,max_window_ndx):
 
-    # clean up
-    input_recorder.close()
-    sys.exit(code)
+        #get a new set of samples
+        #print n,":",len(bpms),":",max_window_ndx,":",fs,":",nsamps,":",samps_ndx
+        data = samps[samps_ndx:samps_ndx+window_samps]
+        if not ((len(data) % window_samps) == 0):
+            raise AssertionError( str(len(data) ) )
+
+        bpm, correl_temp = bpm_detector(data,fs)
+        if bpm == None:
+            continue
+        bpms[window_ndx] = bpm
+        correl = correl_temp
+
+        #iterate at the end of the loop
+        samps_ndx = samps_ndx+window_samps;
+        n=n+1; #counter for debug...
+
+    bpm = numpy.median(bpms)
+    print 'Completed.  Estimated Beats Per Minute:', bpm
+
+    n = range(0,len(correl))
+    plt.plot(n,abs(correl));
+    plt.show(False); #plot non-blocking
+    time.sleep(10);
+    plt.close();
