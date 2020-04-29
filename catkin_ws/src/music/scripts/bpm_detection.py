@@ -43,5 +43,3 @@ def get_file_bpm(path):
             return 0
 
     return beats_to_bpm(beats, path)
-
-print(get_file_bpm("music.mp3"))

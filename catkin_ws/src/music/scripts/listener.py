@@ -39,30 +39,35 @@
 import rospy
 import os
 import pygame
-from std_msgs.msg import String
+from bpm_detection import get_file_bpm
+from std_msgs.msg import String, Float64
+
+pub = rospy.Publisher('comm_bpm', Float64, queue_size=10)
 pygame.init()
 current_path = os.path.dirname(__file__)
 
 def callback(data):
+    global pub
     #rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
     vorigedata=data.data
     if (data.data=="Play+DanceMusic"):
         rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
         pygame.mixer.music.load(os.path.join(current_path, 'startdancing.mp3'))
         pygame.mixer.music.play()
-	
         while pygame.mixer.music.get_busy() == True:
             if (vorigedata==data.data):
- 		continue
+ 		        continue
             else:
                 break
             continue
 
         pygame.mixer.music.load(os.path.join(current_path, 'music.mp3'))
+        bpm = get_file_bpm(os.path.join(current_path, 'music.mp3'))
+        pub.publish(bpm)
         pygame.mixer.music.play()
         while pygame.mixer.music.get_busy() == True:
             if (vorigedata==data.data):
- 		continue
+ 		        continue
             else:
                 break
             continue
@@ -73,7 +78,7 @@ def callback(data):
         pygame.mixer.music.play()
         while pygame.mixer.music.get_busy() == True:
             if (vorigedata==data.data):
- 		continue
+ 		        continue
             else:
                 break
             continue
@@ -91,7 +96,7 @@ def callback(data):
         pygame.mixer.music.play()
         while pygame.mixer.music.get_busy() == True:
             if (vorigedata==data.data):
- 		continue
+ 		        continue
             else:
                 break
             continue
@@ -102,7 +107,7 @@ def callback(data):
         pygame.mixer.music.play()
         while pygame.mixer.music.get_busy() == True:
             if (vorigedata==data.data):
- 		continue
+ 		        continue
             else:
                 break
             continue
@@ -113,7 +118,7 @@ def callback(data):
         pygame.mixer.music.play()
         while pygame.mixer.music.get_busy() == True:
             if (vorigedata==data.data):
- 		continue
+ 		        continue
             else:
                 break
             continue
@@ -124,12 +129,11 @@ def callback(data):
         pygame.mixer.music.play()
         while pygame.mixer.music.get_busy() == True:
             if (vorigedata==data.data):
- 		continue
+ 		        continue
             else:
                 break
             continue
 def listener():
-
     # In ROS, nodes are uniquely named. If two nodes with the same
     # name are launched, the previous one is kicked off. The
     # anonymous=True flag means that rospy will choose a unique
@@ -137,9 +141,9 @@ def listener():
     # run simultaneously.
     rospy.init_node('Sound_controller', anonymous=True)
     rospy.Subscriber('sound', String, callback)
-
     # spin() simply keeps python from exiting until this node is stopped
     rospy.spin()
+
 
 if __name__ == '__main__':
     listener()
