@@ -21,7 +21,7 @@ def callback(data):
     for m in data.markers:
 	if m.id == 5:
             if timeout is not None:
-                timeout.shutdown()                                                                                            │drwxrwxr-x  2 laurens laurens  12288 Apr 25 10:17 OutputData
+                timeout.shutdown()
             timeout = rospy.Timer(rospy.Duration(0.1), timeout_callback, oneshot=True)
 
             posx = m.pose.pose.position.x
