@@ -15,10 +15,11 @@ timeout = None
 
 def timeout_callback(event):
     global timeout, turning, driving
-    turning = False
-    driving = False
+    if turning or driving:
+        turning = False
+        driving = False
+        comm_pos.publish("tag+stop")
     timeout = None
-    comm_pos.publish("tag+stop")
 
 def callback(data):
     global timeout, turning, driving
@@ -53,6 +54,7 @@ def callback(data):
             sys.stdout.flush()
 
 def aruco_tag_tracking():
+    print "\033[2JDetect Position of tag"
     rospy.init_node('detect_position', anonymous=True)
     rospy.Subscriber('/aruco_marker_publisher/markers', MarkerArray, callback)
     rospy.spin()

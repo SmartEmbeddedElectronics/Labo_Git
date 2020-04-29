@@ -27,6 +27,8 @@ def callback(data):
 	        comm_cam.publish("play")
             elif m.id == 4:
 	        comm_v_s.publish("start")
+            elif m.id == 5:
+                comm_cam.publish("follow")
 	    elif m.id > 100 and m.id < 200:
 	        distance = m.id - 100
 	        comm_cam.publish("move+" + str(distance))
@@ -35,6 +37,7 @@ def callback(data):
         print(now, m.id)
 
 def aruco_tag_interpret():
+    print "\033[2JDetect a tag and send its action"
     rospy.init_node('command_camera', anonymous=True)
     rospy.Subscriber('/aruco_marker_publisher/markers', MarkerArray, callback)
     rospy.spin()
