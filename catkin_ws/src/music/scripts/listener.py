@@ -55,7 +55,7 @@ def callback(data):
         pygame.mixer.music.load(os.path.join(current_path, 'startdancing.mp3'))
         pygame.mixer.music.play()
         while pygame.mixer.music.get_busy() == True:
-            rospy.loginfo("hier")
+        #    rospy.loginfo("hier")
         #    if (vorigedata==data.data):
  		#        continue
         #    else:
@@ -67,7 +67,7 @@ def callback(data):
         pub.publish(bpm)
         pygame.mixer.music.play()
         while pygame.mixer.music.get_busy() == True:
-            rospy.loginfo("hier")
+        #    rospy.loginfo("hier")
         #    if (vorigedata==data.data):
  		#        continue
         #    else:
