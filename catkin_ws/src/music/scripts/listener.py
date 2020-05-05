@@ -67,6 +67,7 @@ def callback(data):
         pub.publish(bpm)
         pygame.mixer.music.play()
         while pygame.mixer.music.get_busy() == True:
+            rospy.loginfo("hier")
         #    if (vorigedata==data.data):
  		#        continue
         #    else:
