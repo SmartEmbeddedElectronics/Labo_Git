@@ -55,10 +55,10 @@ def callback(data):
         pygame.mixer.music.load(os.path.join(current_path, 'startdancing.mp3'))
         pygame.mixer.music.play()
         while pygame.mixer.music.get_busy() == True:
-            if (vorigedata==data.data):
- 		        continue
-            else:
-                break
+        #    if (vorigedata==data.data):
+ 		#        continue
+        #    else:
+        #        break
             continue
 
         pygame.mixer.music.load(os.path.join(current_path, 'music.mp3'))
@@ -66,10 +66,10 @@ def callback(data):
         pub.publish(bpm)
         pygame.mixer.music.play()
         while pygame.mixer.music.get_busy() == True:
-            if (vorigedata==data.data):
- 		        continue
-            else:
-                break
+        #    if (vorigedata==data.data):
+ 		#        continue
+        #    else:
+        #        break
             continue
     if (data.data=="Play+ArucoTag"):
         rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
@@ -77,10 +77,10 @@ def callback(data):
         pygame.mixer.music.load(os.path.join(current_path, 'foundtag.mp3'))
         pygame.mixer.music.play()
         while pygame.mixer.music.get_busy() == True:
-            if (vorigedata==data.data):
- 		        continue
-            else:
-                break
+        #    if (vorigedata==data.data):
+ 		#        continue
+    #        else:
+    #            break
             continue
     if (data.data=="Play+ArucoNotRec"):
         rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
@@ -95,10 +95,10 @@ def callback(data):
         pygame.mixer.music.load(os.path.join(current_path, "tellme.mp3"))
         pygame.mixer.music.play()
         while pygame.mixer.music.get_busy() == True:
-            if (vorigedata==data.data):
- 		        continue
-            else:
-                break
+    #        if (vorigedata==data.data):
+ 	#	        continue
+    #        else:
+    #            break
             continue
     if (data.data=="Play+VoiceOff"):
         rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
@@ -106,10 +106,10 @@ def callback(data):
         pygame.mixer.music.load(os.path.join(current_path, "thanks.mp3"))
         pygame.mixer.music.play()
         while pygame.mixer.music.get_busy() == True:
-            if (vorigedata==data.data):
- 		        continue
-            else:
-                break
+    #        if (vorigedata==data.data):
+ 	#	        continue
+    #        else:
+    #            break
             continue
     if (data.data=="Play+VoiceNotRec"):
         rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
@@ -117,10 +117,10 @@ def callback(data):
         pygame.mixer.music.load(os.path.join(current_path, "voicenotrecogn.mp3"))
         pygame.mixer.music.play()
         while pygame.mixer.music.get_busy() == True:
-            if (vorigedata==data.data):
- 		        continue
-            else:
-                break
+        #    if (vorigedata==data.data):
+ 		 #       continue
+        #    else:
+        #        break
             continue
     if (data.data=="Play+Ultrasonic"):
         rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
@@ -128,10 +128,10 @@ def callback(data):
         pygame.mixer.music.load(os.path.join(current_path, "socialdistance.mp3"))
         pygame.mixer.music.play()
         while pygame.mixer.music.get_busy() == True:
-            if (vorigedata==data.data):
- 		        continue
-            else:
-                break
+        #    if (vorigedata==data.data):
+ 		 #       continue
+        #    else:
+        #        break
             continue
 def listener():
     # In ROS, nodes are uniquely named. If two nodes with the same
