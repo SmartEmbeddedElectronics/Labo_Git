@@ -6,6 +6,7 @@ from std_msgs.msg import String
 
 move_pub = rospy.Publisher('movement', String, queue_size=10)
 sound_pub = rospy.Publisher('sound', String, queue_size=10)
+stop_pub = rospy.Publisher('stop', String, queue_size=10)
 
 var_move = 0 #Debug var
 
@@ -68,6 +69,8 @@ def follow(data):
         movement("r+360") #overkill turning
     elif (data.data=="tag+d"):
         movement("d+100") #overkill distance
+    elif (data.data=="tag+stop"):
+        stop_pub.publish("stop") #found and need to stop
     else:
         foute_data("follow")
 
