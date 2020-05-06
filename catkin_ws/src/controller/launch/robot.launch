@@ -1,4 +1,5 @@
 <launch>
   <include file="$(find camera_system)/launch/camera.launch" />
+  <node pkg="voice_control" type="voice_commands.py" name="Voice_commands" />
   <node pkg="controller" type="controller.py" name="Central_controller" />
 </launch>
