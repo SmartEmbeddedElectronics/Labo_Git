@@ -29,14 +29,14 @@ def dance():
     
 
 
-def return_home(data):
+def return_home():
     print "Return home" #Debug print
     move_pub.publish("start")
     move_pub.publish("r+360")
     
 
-def foute_data(errorms):
-    print "Fault "+errorms
+def foute_data(errormsg):
+    print "Fault "+errormsg
 
     
 def movement(verplaatsing):
@@ -65,7 +65,7 @@ def follow(data):
     print "follow or home"
     print data.data
     if (data.data=="tag+r"):
-        movement("r+360") #max turning
+        movement("r+360") #overkill turning
     elif (data.data=="tag+d"):
         movement("d+100") #overkill distance
     else:
