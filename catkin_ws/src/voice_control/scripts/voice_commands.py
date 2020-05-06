@@ -10,6 +10,7 @@ Voice recognition module:
 """
 
 import rospy
+import time
 import speech_recognition as sr
 from std_msgs.msg import String
 
@@ -51,8 +52,9 @@ def callback(data):
         data {String} -- Data from topic comm_voice_starts
     """
     global listen
-    listen = True
     rospy.loginfo("Aruco tag received: " + str(data))
+    time.sleep(1) # elay so that audible feedback gets heard first
+    listen = True
 
 
 def listener(available_commands = None, threshold = 3, frequency = 2):
