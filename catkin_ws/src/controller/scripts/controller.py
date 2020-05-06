@@ -58,6 +58,9 @@ def aruco(data):
     elif (data.data=="go"):
         sound_pub.publish("Play+ArucoTag")
         movement("d+1")
+    elif (data.data=="follow"):
+        sound_pub.publish("Play+ArucoTag")
+        return_home()
     else:
         sound_pub.publish("Play+ArucoNotRec")
         foute_data("Aruco")
