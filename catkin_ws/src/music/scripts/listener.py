@@ -69,9 +69,10 @@ def callback(data):
     if (data.data=="Play+DanceMusic"):
         rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
         speel('startdancing.mp3')
-        speel('music.mp3')
         bpm = get_file_bpm(os.path.join(current_path, 'music.mp3'))
         pub.publish(bpm)
+        speel('music.mp3')
+
     #    pygame.mixer.music.load(os.path.join(current_path, 'music.mp3'))
     #    bpm = get_file_bpm(os.path.join(current_path, 'music.mp3'))
     #    pub.publish(bpm)
