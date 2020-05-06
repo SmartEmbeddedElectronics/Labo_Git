@@ -22,4 +22,8 @@
     <param name="reference_frame"    value="$(arg ref_frame)"/>   <!-- frame in which the marker pose will be refered -->
     <param name="camera_frame"       value="base_link"/>
   </node>
+
+  <node pkg="camera_system" type="command_sender.py" name="Command_sender" />
+  <node pkg="camera_system" type="detect_position.py" name="Detect_position" />
+
 </launch>
