@@ -112,7 +112,8 @@ def listener(available_commands = None, threshold = 3, frequency = 2):
                             continue
 
                 except sr.UnknownValueError:
-                    rospy.logwarn("Google Speech Recognition could not understand audio. Try again.")
+                    listen = False
+                    rospy.logwarn("Google Speech Recognition could not understand audio.")
 
                 except sr.RequestError as e:
                     rospy.logerr("Could not request results from Google Speech Recognition service; {0}".format(e))
