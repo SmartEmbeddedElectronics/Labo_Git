@@ -16,10 +16,10 @@ def speel(f):
     except Exception as e:
         pass
     file=os.path.join(current_path, f)
-    mp3=mutagen.mp3.MP3(file)
+    #mp3=mutagen.mp3.MP3(file)
     #we need to do this to find the sample Rate, otherwise
     #it won't play in the right key and tempo
-    pygame.mixer.init(frequency=mp3.info.sample_rate)
+    pygame.mixer.init()#frequency=mp3.info.sample_rate)
     pygame.mixer.music.load(file)
     pygame.mixer.music.play()
     try:
@@ -35,9 +35,9 @@ def callback(data):
     if (data.data=="Play+DanceMusic"):
         rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
         speel('startdancing.mp3')
-        bpm = get_file_bpm(os.path.join(current_path, 'music.mp3'))
+        bpm = get_file_bpm(os.path.join(current_path, 'music-short.mp3'))
         pub.publish(bpm) #send the beats per minute so we can flash leds
-        speel('music.mp3')
+        speel('music-short.mp3')
 
     if (data.data=="Play+ArucoTag"):
         rospy.loginfo(rospy.get_caller_id() + 'I heard %s', data.data)
