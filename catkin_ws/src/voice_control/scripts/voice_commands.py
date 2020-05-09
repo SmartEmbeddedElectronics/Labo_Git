@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 """
+Author: Felix Lerner
 Voice recognition module:
     ----------------------------------------
     |   Node: Voice_controller             |
@@ -53,7 +54,8 @@ def callback(data):
     """
     global listen
     rospy.loginfo("Aruco tag received: " + str(data))
-    time.sleep(1) # elay so that audible feedback gets heard first
+    # Delay so that audible feedback gets heard first
+    time.sleep(1)
     listen = True
 
 
